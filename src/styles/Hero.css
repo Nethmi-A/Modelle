@@ -124,7 +124,9 @@ Responsive Layouts
   position: relative;
   /* background: linear-gradient(120deg, #0a0a0a, #111, #0a0a0a); */
   overflow: hidden;
-  padding: 4rem 2rem;
+  padding: 4rem ;
+  height: 100vh;
+  margin: 0 auto;
 }
 
 .home-section::before {

@@ -89,6 +89,9 @@
 
 /* Mobile layout - stack vertically */
 @media (max-width: 768px) {
+  .how-section {
+    margin: 2rem 1rem;
+  }
   .card-container {
     flex-direction: column;  /* stack cards vertically */
     align-items: center;

@@ -14,9 +14,14 @@ export default function CTA({ variant, style }) {
     },
     exploreFeatures: {
       text: "Explore Features",
-      link: "/features",
+      link: "/HowItWorks3D",
       style: "secondary",
     },
+    login: {
+      text: "Log In",
+      link: "/login",
+      style: "secondary"
+    }
   };
 
   const btn = buttons[variant];

@@ -2,56 +2,91 @@ import "../styles/Footer.css";
 
 export default function Footer() {
   return (
-    <footer style={styles.footer}>
-      <ul style={styles.iconList}>
-        <li>
-          <a href="mailto:app.modelle@gmail.com" className="footer-link">
-            <img src="/email.svg" alt="email" />
-            <p>Email</p>
+    <footer className="footer">
+      <div className="footer-inner">
+
+        {/* Brand */}
+        <div className="footer-brand">
+          <img src="/Modelle-logo.png" alt="Modelle logo" />
+          <p>Where Your 3D Imaginations Come To Life</p>
+        </div>
+
+        {/* Columns */}
+        <div className="footer-columns">
+
+          <div className="footer-col">
+            <h4>Resources</h4>
+            <a href="#">Pricing</a>
+            <a href="https://github.com/Pawani-Nethmini/MODELLE---SDGP">GitHub</a>
+            <a href="#">Releases</a>
+            <a href="#">Careers</a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Product</h4>
+            <a href="#features">Marketplace</a>
+            <a href="#upload">Upload STL</a>
+            <a href="#validation">STL Validation</a>
+            <a href="#printers">Find Printers</a>
+            <a href="#printers">Find Designers</a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Legal</h4>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="mailto:app.modelle@gmail.com">Contact Us</a>
+          </div>
+
+          {/* Social + Contact */}
+          <div className="footer-col">
+          <h4>Connect</h4>
+
+          <a href="mailto:app.modelle@gmail.com" className="footer-social">
+            <span className="icon-wrap">
+              <img src="/email.svg" alt="Email" />
+            </span>
+            <span>Email</span>
           </a>
-        </li>
-        <li>
-          <a href="https://github.com/Pawani-Nethmini/MODELLE---SDGP" className="footer-link">
-            <img src="/github.svg" alt="github" />
-            <p>GitHub</p>
+
+          <a
+            href="https://github.com/Pawani-Nethmini/MODELLE---SDGP"
+            className="footer-social"
+          >
+            <span className="icon-wrap">
+              <img src="/github.svg" alt="GitHub" />
+            </span>
+            <span>GitHub</span>
           </a>
-        </li>
-        <li>
-          <a href="https://www.linkedin.com/company/modelle-platform" className="footer-link">
-            <img src="/linkedin.svg" alt="linkedin" />
-            <p>LinkedIn</p>
+
+          <a
+            href="https://www.linkedin.com/company/modelle-platform"
+            className="footer-social"
+          >
+            <span className="icon-wrap">
+              <img src="/linkedin.svg" alt="LinkedIn" />
+            </span>
+            <span>LinkedIn</span>
           </a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/modelleweb?igsh=aHZ6MWc5eXAwMDl0&utm_source=qr" className="footer-link">
-            <img src="/insta.svg" alt="instagram" />
-            <p>Instagram</p>
+
+          <a
+            href="https://www.instagram.com/modelleweb"
+            className="footer-social"
+          >
+            <span className="icon-wrap">
+              <img src="/insta.svg" alt="Instagram" />
+            </span>
+            <span>Instagram</span>
           </a>
-        </li>
-      </ul>
-      <p style={styles.copyright}>© 2025 Modelle. All rights reserved.</p>
+        </div>
+
+
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        © 2025 Modelle. All rights reserved.
+      </div>
     </footer>
   );
 }
-
-const styles = {
-  footer: {
-    padding: "2rem",
-    borderTop: "1px solid #222",
-    textAlign: "center",
-    color: "#777",
-  },
-  iconList: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "5rem",
-    listStyle: "none",
-    padding: 0,
-    marginBottom: "1rem",
-  },
-  copyright: {
-    fontSize: "0.9rem",
-    color: "#555",
-    marginTop: "1rem",
-  }
-};

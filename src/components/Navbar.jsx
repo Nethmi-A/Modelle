@@ -1,8 +1,6 @@
 import { useState } from "react";
 import CTA from "./CTA";
-import { Routes, Route} from 'react-router-dom';
-
-
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,15 +19,26 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <ul style={styles.links} className="desktop-only">
-          <li>Home</li>
-          <li>About us</li>
-          <li>Features</li>
-          <li>Contact</li>
+          <li><a href="#hero" className="nav-link">Home</a></li>
+          <li><a href="#about" className="nav-link">About us</a></li>
+          <li><a href="#features" className="nav-link">Features</a></li>
+          <li><a href="#contact" className="nav-link">Contact</a></li>
         </ul>
 
         {/* Desktop Actions */}
         <div style={styles.actions} className="desktop-only">
-          <button style={styles.login}>Login</button>
+          <CTA
+            variant="login"
+            style={{
+              padding: "8px 20px",
+              margin: 0,
+              borderRadius: "20px",
+              fontWeight: "600",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
           <CTA
             variant="getStarted"
             style={{
@@ -58,16 +67,54 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={`mobile-only mobileMenu ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen(false)} // Close on click outside
+        onClick={() => setMenuOpen(false)}
       >
-        <div className="mobileMenuContent" onClick={(e) => e.stopPropagation()}> {/* Prevent close on content click */}
-          <a href="#" className="mobileLink" onClick={() => setMenuOpen(false)}>Home</a>
-          <a href="#" className="mobileLink" onClick={() => setMenuOpen(false)}>About us</a>
-          <a href="#" className="mobileLink" onClick={() => setMenuOpen(false)}>Features</a>
-          <a href="#" className="mobileLink" onClick={() => setMenuOpen(false)}>Contact</a>
+        <div className="mobileMenuContent" onClick={(e) => e.stopPropagation()}>
+           <a
+            href="#hero"
+            className="mobileLink"
+            onClick={() => setMenuOpen(false)}
+          >
+            Home
+          </a>
 
+          <a
+            href="#about"
+            className="mobileLink"
+            onClick={() => setMenuOpen(false)}
+          >
+            About us
+          </a>
+
+          <a
+            href="#features"
+            className="mobileLink"
+            onClick={() => setMenuOpen(false)}
+          >
+            Features
+          </a>
+
+          <a
+            href="#contact"
+            className="mobileLink"
+            onClick={() => setMenuOpen(false)}
+          >
+            Contact
+          </a>
           <div className="mobileActions">
-            <button className="login" onClick={() => setMenuOpen(false)}>Login</button>
+            <CTA
+              variant="login"
+              style={{
+                padding: "8px 20px",
+                margin: 0,
+                borderRadius: "20px",
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={() => setMenuOpen(false)}
+            />
             <CTA
               variant="getStarted"
               style={{
@@ -80,7 +127,7 @@ export default function Navbar() {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              onClick={() => setMenuOpen(false)} // Close on CTA click
+              onClick={() => setMenuOpen(false)}
             />
           </div>
         </div>
@@ -104,6 +151,50 @@ export default function Navbar() {
           }
         }
 
+        /* Desktop Navigation Links */
+        .nav-link {
+          color: #9ca3af;
+          text-decoration: none;
+          font-weight: 500;
+          position: relative;
+          transition: color 0.3s ease;
+          padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: linear-gradient(90deg, #00f5ff, #0ea5e9);
+          transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+          color: #00f5ff;
+        }
+
+        .nav-link:hover::after {
+          width: 100%;
+        }
+
+        .nav-link:active {
+          color: #06b6d4;
+          transform: translateY(1px);
+        }
+
+        .nav-link.active {
+          color: #00f5ff;
+          font-weight: 600;
+        }
+
+        .nav-link.active::after {
+          width: 100%;
+        }
+
+        /* Mobile Menu */
         .mobileMenu {
           position: fixed;
           top: 0;
@@ -116,7 +207,7 @@ export default function Navbar() {
           z-index: 10000;
           transform: translateX(100%);
           transition: transform 0.3s ease;
-          cursor: pointer; /* Indicate clickable to close */
+          cursor: pointer;
         }
 
         .mobileMenu.open {
@@ -130,19 +221,58 @@ export default function Navbar() {
           height: 100%;
         }
 
+        /* Mobile Navigation Links */
         .mobileLink {
-          color: #ccc;
+          color: #9ca3af;
           text-decoration: none;
           font-size: 1.2rem;
-          padding: 0.5rem 0;
+          padding: 0.75rem 1rem;
           cursor: pointer;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .mobileLink::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 3px;
+          background: linear-gradient(180deg, #00f5ff, #0ea5e9);
+          transform: scaleY(0);
+          transition: transform 0.3s ease;
+        }
+
+        .mobileLink:hover {
+          color: #00f5ff;
+          background-color: rgba(0, 245, 255, 0.05);
+          padding-left: 1.5rem;
+        }
+
+        .mobileLink:hover::before {
+          transform: scaleY(1);
+        }
+
+        .mobileLink.active {
+          color: #00f5ff;
+          background-color: rgba(0, 245, 255, 0.1);
+          font-weight: 600;
+          padding-left: 1.5rem;
+          box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+
+        .mobileLink.active::before {
+          transform: scaleY(1);
         }
 
         .mobileActions {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          margin-top: auto; /* Push to bottom */
+          margin-top: auto;
         }
 
         .mobileActions button {
@@ -183,18 +313,11 @@ const styles = {
     display: "flex",
     gap: "2rem",
     listStyle: "none",
-    color: "#ccc",
     cursor: "pointer",
   },
   actions: {
     display: "flex",
     gap: "1rem",
-  },
-  login: {
-    background: "transparent",
-    color: "#ccc",
-    border: "none",
-    cursor: "pointer",
   },
   hamburger: {
     fontSize: "24px",

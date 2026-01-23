@@ -16,7 +16,7 @@ export default function Hero() {
             <div className="hero-header">
               <h1 className="hero-title">Modelle</h1>
               <h2 className="hero-subtitle">
-                Where Your 3D Imagination Comes To Life
+                Where Your 3D Imaginations Come To Life
               </h2>
             </div>
           <div className="hero-text">

@@ -4,19 +4,31 @@ import "../styles/Splash.css";
 
 export default function Splash({ onFinish }) {
   const [showContent, setShowContent] = useState(false);
+  const [exit, setExit] = useState(false);
 
   useEffect(() => {
-    const contentTimer = setTimeout(() => setShowContent(true), 600);
-    const endTimer = setTimeout(() => onFinish(), 3200);
+  const showTimer = setTimeout(() => {
+    setShowContent(true); // reveal logo + cube + tagline
+  }, 3000);
 
-    return () => {
-      clearTimeout(contentTimer);
-      clearTimeout(endTimer);
-    };
-  }, [onFinish]);
+  const exitTimer = setTimeout(() => {
+    setExit(true); // start fade-out
+  }, 4000);
+
+  const finishTimer = setTimeout(() => {
+    onFinish(); // unmount AFTER fade-out
+  }, 3600);
+
+  return () => {
+    clearTimeout(showTimer);
+    clearTimeout(exitTimer);
+    clearTimeout(finishTimer);
+  };
+}, [onFinish]);
+
 
   return (
-    <div className="splash-container">
+    <div className={`splash-container ${exit ? 'exit' : ''}`}>
       <div className={`brand-core ${showContent ? "show" : ""}`}>
         <LoadingIcon />
 

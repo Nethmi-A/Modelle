@@ -4,23 +4,29 @@ import { useRef, useState, useEffect } from "react";
 import "../styles/Stakeholders.css";
 import CTA from "./CTA";
 
-function FloatingCard({ position, title, points, iconColor, size }) {
+function FloatingCard({ position, title, points, iconColor, size, isActive, isMobile }) {
   const groupRef = useRef();
   const [hovered, setHovered] = useState(false);
-  const scrollRef = useRef(null)
+  
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
+    groupRef.current.position.x += (position[0] - groupRef.current.position.x) * 0.1;
     groupRef.current.position.y = position[1] + Math.sin(t) * 0.3;
     groupRef.current.rotation.y = Math.sin(t * 0.5) * 0.1;
     groupRef.current.rotation.x = Math.sin(t * 0.3) * 0.02;
-    groupRef.current.scale.setScalar(hovered ? 1.05 : 1);
+    
+    // Smooth scale transition with active state for mobile
+    const targetScale = hovered ? 1.05 : (isMobile && isActive ? 1 : isMobile ? 0.85 : 1);
+    groupRef.current.scale.setScalar(
+      groupRef.current.scale.x + (targetScale - groupRef.current.scale.x) * 0.1
+    );
   });
 
   return (
     <group
       ref={groupRef}
       position={position}
-      scale={[1, 1, 1]}
+      scale={[0.7, 0.7, 0.7]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
@@ -29,16 +35,20 @@ function FloatingCard({ position, title, points, iconColor, size }) {
         <meshStandardMaterial
           color="#111"
           transparent
-          opacity={0.2}
+          opacity={isMobile && !isActive ? 0.15 : 0.2}
           roughness={0.05}
           metalness={0.8}
-          emissive={hovered ? iconColor : "#000"}
-          emissiveIntensity={hovered ? 0.1 : 0}
+          emissive={hovered || (isMobile && isActive) ? iconColor : "#000"}
+          emissiveIntensity={hovered || (isMobile && isActive) ? 0.1 : 0}
         />
       </mesh>
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[size.width + 0.2, size.height + 0.2, 0.1]} />
-        <meshBasicMaterial color={iconColor} transparent opacity={0.3} />
+        <meshBasicMaterial 
+          color={iconColor} 
+          transparent 
+          opacity={isMobile && !isActive ? 0.2 : 0.3} 
+        />
       </mesh>
       <mesh position={[0, size.height / 2 - 1, 0.2]}>
         <sphereGeometry args={[0.4, 32, 32]} />
@@ -58,7 +68,7 @@ function FloatingCard({ position, title, points, iconColor, size }) {
         wrapperClass="stakeholder-html"
         style={{ pointerEvents: "none" }}
       >
-        <div className={`stakeholder-card ${hovered ? 'hovered' : ''}`}>
+        <div className={`stakeholder-card ${hovered ? 'hovered' : ''} ${isMobile && isActive ? 'active' : ''} ${isMobile && !isActive ? 'inactive' : ''}`}>
           <h3>{title}</h3>
           <ul>
             {points.map((p, i) => (
@@ -66,7 +76,6 @@ function FloatingCard({ position, title, points, iconColor, size }) {
                 <span className="icon">●</span>
                 <span className="text">{p}</span>
               </li>
-
             ))}
           </ul>
         </div>
@@ -76,31 +85,17 @@ function FloatingCard({ position, title, points, iconColor, size }) {
 }
 
 export default function Stakeholders3D() {
-
   const fov = 60;
-
-    const [windowSize, setWindowSize] = useState({
+  const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800,
   });
 
-  // Slider config for small screens
   const isMobile = windowSize.width <= 768;
-   const scrollRef = useRef(null);
+  const cameraZ = isMobile ? 19 : 15;
 
-  const cameraZ = isMobile ? 12 : 15;
-
-  // Calculate visible height in world units
-  const visibleHeight =
-    2 * Math.tan((fov * Math.PI) / 360) * cameraZ;
-
-  // 70vh equivalent
-  const meshHeight = isMobile
-    ? visibleHeight * 0.8
-    : 16;
-
-
-
+  const visibleHeight = 2 * Math.tan((fov * Math.PI) / 360) * cameraZ;
+  const meshHeight = isMobile ? visibleHeight * 0.8 : 12.5;
 
   useEffect(() => {
     const handleResize = () => setWindowSize({
@@ -146,26 +141,32 @@ export default function Stakeholders3D() {
       ],
     },
   ];
+
   const [activeCard, setActiveCard] = useState(0);
 
+  const handlePrevCard = () => {
+    setActiveCard((prev) => (prev > 0 ? prev - 1 : stakeholders.length - 1));
+  };
 
+  const handleNextCard = () => {
+    setActiveCard((prev) => (prev < stakeholders.length - 1 ? prev + 1 : 0));
+  };
 
-  // Card positions
   const getPositions = () => {
     if (isMobile) {
-      // Arrange cards horizontally for scrolling
-      return stakeholders.map((_, idx) => [(idx - activeCard) * 12, 0, 0]);    } else {
-      // Desktop layout
+      return stakeholders.map((_, idx) => [(idx - activeCard) * 10, 0, 0]);
+    } else {
       return [[-11, 0, 0], [0, 0, 0], [11, 0, 0]];
     }
   };
 
   const positions = getPositions();
   const cardSize = {
-    width: isMobile ? 7 : 10,
+    width: isMobile ? 7 : 7.5,
     height: meshHeight,
   };
-  const cameraPos = isMobile ? [windowSize.width / 100, 0, 12] : [0, 0, 15];
+  const cameraPos = isMobile ? [0, 0, 12] : [0, 0, 15];
+
   return (
     <section className="stakeholders-section" style={{ minHeight: "100vh", padding: "2rem", position: "relative", overflow: "hidden" }}>
       <h2
@@ -173,7 +174,7 @@ export default function Stakeholders3D() {
         style={{
           textAlign: "center",
           fontSize: "clamp(2rem, 5vw, 3rem)",
-          marginBottom: "3rem",
+          marginBottom: "-3rem",
           background: "linear-gradient(90deg, #00f5ff 5%, #7d98f3 50%, #8b5cf6 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
@@ -185,16 +186,18 @@ export default function Stakeholders3D() {
 
       <div className="canvas-scroll-wrapper">
         {isMobile && (
-          <button className="scroll-arrow left"
-            onClick={() => scrollRef.current.scrollBy({ left: -250, behavior: 'smooth' })}>
-            ⟵
+          <button 
+            className="scroll-arrow left"
+            onClick={handlePrevCard}
+            aria-label="Previous card"
+          >
+            ‹
           </button>
         )}
 
-        {/* Horizontal scroll wrapper for mobile */}
-        <div className={`canvas-wrapper ${isMobile ? 'mobile-scroll' : ''}`} ref={scrollRef}>
+        <div className={`canvas-wrapper ${isMobile ? 'mobile-scroll' : ''}`}>
           <Canvas
-            style={{ width: "100%", minHeight: isMobile ? "300px" : "100vh", cursor: isMobile ? 'grab' : 'auto' }}
+            style={{ width: "100%", minHeight: isMobile ? "500px" : "100vh" }}
             camera={{ position: cameraPos, fov: 60 }}
           >
             <ambientLight intensity={0.3} />
@@ -212,25 +215,38 @@ export default function Stakeholders3D() {
                 points={s.points}
                 iconColor={s.iconColor}
                 size={cardSize}
+                isActive={idx === activeCard}
+                isMobile={isMobile}
               />
             ))}
           </Canvas>
         </div>
-          {isMobile && (
-          <button className="scroll-arrow right"
-            onClick={() => scrollRef.current.scrollBy({ left: 250, behavior: 'smooth' })}>
-            ⟶
+
+        {isMobile && (
+          <button 
+            className="scroll-arrow right"
+            onClick={handleNextCard}
+            aria-label="Next card"
+          >
+            ›
           </button>
         )}
-
-
       </div>
 
-      
+      {isMobile && (
+        <div className="card-indicators">
+          {stakeholders.map((_, idx) => (
+            <button
+              key={idx}
+              className={`indicator ${idx === activeCard ? 'active' : ''}`}
+              onClick={() => setActiveCard(idx)}
+              aria-label={`Go to card ${idx + 1}`}
+            />
+          ))}
+        </div>
+      )}
 
-      {isMobile && <div className="scroll-hint">⟵ Swipe →</div>}
-
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <div className="btn-join-community">
         <CTA variant="joinCommunity" />
       </div>
     </section>

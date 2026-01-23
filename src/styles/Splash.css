@@ -11,6 +11,17 @@
   justify-content: center;
   overflow: hidden;
   z-index: 10000;
+  transition: 
+  opacity 0.8s ease,
+  transform 0.8s ease,
+  filter 0.8s ease;
+}
+
+.splash-container.exit {
+  opacity: 0;
+  transform: scale(1.02);
+  filter: blur(6px);
+  pointer-events: none;
 }
 
 /* Center line */
@@ -121,6 +132,7 @@
 
 .splash-tagline {
   position: absolute;
+  text-align: center;
   bottom: 30%;
   font-size: 1rem;
   color: #ccc;
@@ -132,3 +144,16 @@
 .splash-tagline.show {
   opacity: 1;
 }
+
+.home {
+  opacity: 0;
+  animation: homeFade 0.8s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes homeFade {
+  to {
+    opacity: 1;
+  }
+}
+
