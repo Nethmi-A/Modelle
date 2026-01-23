@@ -14,30 +14,6 @@ export default function Footer() {
         {/* Columns */}
         <div className="footer-columns">
 
-          <div className="footer-col">
-            <h4>Resources</h4>
-            <a href="#">Pricing</a>
-            <a href="https://github.com/Pawani-Nethmini/MODELLE---SDGP">GitHub</a>
-            <a href="#">Releases</a>
-            <a href="#">Careers</a>
-          </div>
-
-          <div className="footer-col">
-            <h4>Product</h4>
-            <a href="#features">Marketplace</a>
-            <a href="#upload">Upload STL</a>
-            <a href="#validation">STL Validation</a>
-            <a href="#printers">Find Printers</a>
-            <a href="#printers">Find Designers</a>
-          </div>
-
-          <div className="footer-col">
-            <h4>Legal</h4>
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Policy</a>
-            <a href="mailto:app.modelle@gmail.com">Contact Us</a>
-          </div>
-
           {/* Social + Contact */}
           <div className="footer-col">
           <h4>Connect</h4>
@@ -79,6 +55,24 @@ export default function Footer() {
             <span>Instagram</span>
           </a>
         </div>
+
+          <div className="footer-col">
+            <h4>Product</h4>
+            <a href="#features">Marketplace</a>
+            <a href="#upload">Upload STL</a>
+            <a href="#validation">STL Validation</a>
+            <a href="#printers">Find Printers</a>
+            <a href="#printers">Find Designers</a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Legal</h4>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="mailto:app.modelle@gmail.com">Contact Us</a>
+          </div>
+
+          
 
 
         </div>
